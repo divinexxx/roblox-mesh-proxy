@@ -9,9 +9,14 @@ import urllib.request
 
 PORT = int(os.environ.get("PORT", 8090))
 
+ROBLOSECURITY = os.environ.get("ROBLOSECURITY", "")
+
 def download_asset(asset_id):
     url = f"https://assetdelivery.roblox.com/v1/asset/?id={asset_id}"
-    req = urllib.request.Request(url, headers={"User-Agent": "RobloxProxy/1.0"})
+    headers = {"User-Agent": "Roblox/WinInet"}
+    if ROBLOSECURITY:
+        headers["Cookie"] = f".ROBLOSECURITY={ROBLOSECURITY}"
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = resp.read()
     if len(data) < 8:
